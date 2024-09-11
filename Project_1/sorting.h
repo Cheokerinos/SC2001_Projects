@@ -1,5 +1,5 @@
-#ifndef Sort_H
-#define Sort_H
+#ifndef Sorting_H
+#define Sorting_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -11,19 +11,18 @@ typedef comparison_count (*SortingFunction)(int *begin, const int *end, ...);
 
 comparison_count insertionSort(int *begin, const int *end) {
     comparison_count compareCount = 0;
-    for (int *now = begin + 1; now != end; ++now) {
+    for (int *now = begin + 1; now != end; ++now) { //starts from the 2nd element in the array
         int key = *now;
-        int *p = now - 1;
-        while (p >= begin && ++compareCount && *p > key) {
-            *(p + 1) = *p;
-            --p;
+        int *p = now - 1; //key being compared to previous element of the array
+        while (p >= begin && ++compareCount && *p > key) { //if key is smaller than current p, then swap the positions
+            *(p + 1) = *p; // assigning p to the current key position
         }
-        *(p + 1) = key;
+        *p = key;
     }
     return compareCount;
 }
 
-comparison_count mergeWithExistingTemp(int *begin, int *mid, const int *end, int *temp) {
+/*comparison_count mergeWithExistingTemp(int *begin, int *mid, const int *end, int *temp) {
     comparison_count compareCount = 0;
     int *left = begin;
     int *right = mid;
@@ -44,13 +43,37 @@ comparison_count mergeWithExistingTemp(int *begin, int *mid, const int *end, int
     }
     memcpy(begin, temp, sizeof(int) * (end - begin));
     return compareCount;
-}
+}*/
 
 comparison_count merge(int *begin, int *mid, const int *end) {
     comparison_count compareCount = 0;
     size_t size = end - begin;
     int *temp = (int *) malloc(size * sizeof(int));
-    compareCount += mergeWithExistingTemp(begin, mid, end, temp);
+    if(!temp){
+        return 0;
+    }
+    int *left = begin; // left subarray
+    int *right = mid; // right subarray
+    int *p = temp; //pointer to temp array
+    while(*left != mid && *right != end){
+        if(*left <= *right){ // comparison of left subarray to right subarray
+            *p++ = *left++; // if left is smaller, then insert left first
+        }
+        else{
+            *p++ = *right++; // if right is smaller, then insert right first
+        }
+        ++compareCount;
+    }
+
+    while(*left!=mid){ //if element still exists in left subarray
+        *p++ = *left++;
+    }
+
+    while(*right!=end){ //if element still exists in right subarray
+        *p++ = *left++;
+    }
+
+    memcpy(begin, temp, sizeof(int) * (end - begin))
     free(temp);
     return compareCount;
 }
@@ -133,4 +156,4 @@ comparison_count mergeSortWithInsertionSort(int *begin, const int *end, int thre
     return compareCount;
 }*/
 
-#endif //PROJECT1_SORT_H
+#endif //PROJECT1_Sorting_H
