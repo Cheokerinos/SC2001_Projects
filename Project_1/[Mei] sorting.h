@@ -82,7 +82,7 @@ comparison_count merge(int *begin, int *mid, const int *end) {
     return compareCount;
 }
 
-comparison_count mergeSort(int *begin, const int *end) {
+comparison_count mergeSort(int *begin, const int *end) { //* For part D when comparing the hybrid algorithm to original mergeSort algo
     comparison_count compareCount = 0;
     size_t size = end - begin;
     if (size == 1) {
@@ -99,8 +99,8 @@ comparison_count mergeSortWithInsertionSort(int *begin, const int *end, int thre
     comparison_count compareCount = 0;
     size_t size = end - begin;
     if (size <= threshold) {
-        compareCount += insertionSort(begin, end);
-    } else {
+        compareCount += insertionSort(begin, end); //If size is below threshold, will start using insertionSort
+    } else { //If not, use mergeSort until the size decreases below or equivalent to the threshold
         int *mid = begin + size / 2;
         compareCount += mergeSortWithInsertionSort(begin, mid, threshold);
         compareCount += mergeSortWithInsertionSort(mid, end, threshold);
