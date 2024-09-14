@@ -95,6 +95,7 @@ comparison_count mergeSort(int *begin, const int *end) { //* For part D when com
     return compareCount;
 }
 
+
 comparison_count mergeSortWithInsertionSort(int *begin, const int *end, int threshold) {
     comparison_count compareCount = 0;
     size_t size = end - begin;
