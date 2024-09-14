@@ -28,8 +28,10 @@ int main() {
 
     int sizes[] = {1000, 5000, 10000, 50000, 100000, 200000, 500000, 750000, 1000000, 2000000, 5000000, 7500000, 10000000}; //! Can change to whatever values we want
     int num_sizes = sizeof(sizes) / sizeof(sizes[0]);
-    int thresholds[] = {10, 20, 50, 100, 200, 500, 1000}; //! Can change this too
+    int thresholds[] = {10, 20, 30, 40, 50, 100, 200, 500, 1000}; //! Can change this too
     int num_thresholds = sizeof(thresholds) / sizeof(thresholds[0]);
+    clock_t start, end;
+    double cpu_time_used;
 
     FILE *file = fopen("Optimal_S_Part_Ciii.csv", "w");
     if (file == NULL) {
@@ -37,7 +39,7 @@ int main() {
         return 1;
     }
 
-    fprintf(file, "Size,Threshold,Comparisons\n");
+    fprintf(file, "Size,Threshold,Comparisons,CPU Time (ms)\n");
 
     // Loops through each array size and S value given. 
     for (int i = 0; i < num_sizes; i++) {
@@ -57,9 +59,13 @@ int main() {
 
             gen_random_numbers(array, Size);
 
+            start = clock();
             total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+            end = clock();
 
-            fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
+            cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
+
+            fprintf(file, "%d,%d,%llu,%.3f\n", Size, threshold, totalComparisons, cpu_time_used);
 
             free(array);
         }

@@ -32,9 +32,11 @@ int main() {
     srand(time(0)); //Generate different results each time the program runs
 
     int Size = 1000;
-    int increment = 500000;  //! Increment size by 1000 each iteration. Change this value or value of Size and adjust accordingly to our needs.
-    int max_size = 10000000;  
-    int threshold = 50;  //! Fixed S value for Part Ci). 
+    int increment = 1000;  //! Increment size by 1000 each iteration. Change this value or value of Size and adjust accordingly to our needs.
+    int max_size = 20000;  
+    int threshold = 50;  //! Fixed threshold S value for part Ci). Once find optimal value of S, can replace this value with that.
+    clock_t start, end;
+    double cpu_time_used;
 
     // Open CSV file
     FILE *file = fopen("Increment_Array_Sizes_Part_Ci.csv", "w");
@@ -45,7 +47,7 @@ int main() {
     }
 
     // Write header row to the CSV file
-    fprintf(file, "Size,Threshold,Comparisons\n");
+    fprintf(file, "Size,Threshold,Comparisons,CPU Time (ms)\n");
 
     while (Size <= max_size) {
 
@@ -66,8 +68,13 @@ int main() {
         }
         printf("\n");
 
+        // Record CPU time for mergeSortWithInsertionSort().
+        start = clock();
         // Call mergeSortWithInsertionSort to start the hybrid algorithm
         total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+        end = clock();
+
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
 
         printf("After sorting:\n");
         for (int i = 0; i < 10; i++) {
@@ -76,9 +83,10 @@ int main() {
         printf("\n");
 
         printf("Total comparisons: %llu\n", totalComparisons);
+        printf("Total time taken in ms: %.3f milliseconds\n", cpu_time_used);
 
         // Write results to csv
-        fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
+        fprintf(file, "%d,%d,%llu,%.3f\n", Size, threshold, totalComparisons, cpu_time_used);
 
         free(array);
 

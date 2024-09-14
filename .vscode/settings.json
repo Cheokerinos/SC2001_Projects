@@ -5,6 +5,7 @@
         "string.h": "c",
         "[mei] sorting.h": "c",
         "stdio.h": "c",
-        "malloc.h": "c"
+        "malloc.h": "c",
+        "type_traits": "c"
     }
 }

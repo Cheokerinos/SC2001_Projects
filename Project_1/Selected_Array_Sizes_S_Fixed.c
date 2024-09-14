@@ -28,7 +28,8 @@ int main() {
     //Linear growth
     int sizes[] = {1000, 5000, 10000, 50000, 100000, 200000, 500000, 750000, 1000000, 2000000, 5000000, 7500000, 10000000};  //! Can change the sizes here if you need
     int num_sizes = sizeof(sizes) / sizeof(sizes[0]);  // Number of array sizes
-    int threshold = 50; //! Fixed threshold S value for part Ci).
+    int threshold = 50; //! Fixed threshold S value for part Ci). 
+    double cpu_time_used;
 
     // Open CSV file
     FILE *file = fopen("Selected_Array_Sizes_Part_Ci.csv", "w");
@@ -39,7 +40,7 @@ int main() {
     }
 
     // Write header row to the CSV file
-    fprintf(file, "Size,Threshold,Comparisons\n");
+    fprintf(file, "Size,Threshold,Comparisons,CPU Time (ms)\n");
 
     for (int i = 0; i < num_sizes; i++) {
         int Size = sizes[i];
@@ -61,8 +62,12 @@ int main() {
         }
         printf("\n");
 
+        start = clock();
         // Call mergeSortWithInsertionSort to start the hybrid algorithm
         total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+        end = clock();
+
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
 
         printf("After sorting:\n");
         for (int i = 0; i < 10; i++) {
@@ -73,7 +78,7 @@ int main() {
         printf("Total comparisons: %llu\n", totalComparisons);
 
         // Write results to csv
-        fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
+        fprintf(file, "%d,%d,%llu,%.3f\n", Size, threshold, totalComparisons, cpu_time_used);
 
         free(array);
 

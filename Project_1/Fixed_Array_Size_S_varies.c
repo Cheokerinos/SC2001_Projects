@@ -28,6 +28,8 @@ int main() {
     int fixed_size = 10000;  //! Can change the fixed sizes of array accordingly. 
     int thresholds[] = {10, 16, 32, 50, 100, 200, 500, 1000};  // Set of threshold we can use to test on. Generally people use between 16 to 32 but we can try others.
     int num_thresholds = sizeof(thresholds) / sizeof(thresholds[0]);  // Number of thresholds we are testing
+    clock_t start, end;
+    double cpu_time_used;
 
     FILE *file = fopen("Different_S_Values_Part_Cii.csv", "w");
 
@@ -36,7 +38,7 @@ int main() {
         return 1;
     }
 
-    fprintf(file, "Size,Threshold,Comparisons\n");
+    fprintf(file, "Size,Threshold,Comparisons,CPU Time (ms)\n");
 
     for (int i = 0; i < num_thresholds; i++) {
         int threshold = thresholds[i];
@@ -51,12 +53,16 @@ int main() {
 
         gen_random_numbers(array, fixed_size);
 
+        start = clock();
         // Call mergeSortWithInsertionSort to sort the array and get the comparison count
         total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + fixed_size, threshold);
+        end = clock();
+
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
 
         printf("Total comparisons with Threshold = %d: %llu\n", threshold, totalComparisons);
 
-        fprintf(file, "%d,%d,%llu\n", fixed_size, threshold, totalComparisons);
+        fprintf(file, "%d,%d,%llu,%.3f\n", fixed_size, threshold, totalComparisons, cpu_time_used);
 
         free(array);
     }
