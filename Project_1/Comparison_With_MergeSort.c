@@ -54,7 +54,7 @@ int main() {
 
     // Measure time for MergeSort
     start = clock(); //Returns number of clock ticks when program starts
-    comparison_count comparisons = mergeSort(array, array + Size);
+    total_comparisons totalComparisons = mergeSort(array, array + Size);
     end = clock(); // Stops the recording of time taken
     cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
     // end - start is the number of clock ticks from clock(). 
@@ -62,8 +62,8 @@ int main() {
     // Time taken in seconds as cpu time used in double format. 
 
     printf("MergeSort Time: %f seconds\n", cpu_time_used);
-    printf("MergeSort Comparisons: %lld\n", comparisons);
-    fprintf(file, "MergeSort,%f,%lld\n", cpu_time_used, comparisons);
+    printf("MergeSort Comparisons: %lld\n", totalComparisons);
+    fprintf(file, "MergeSort,%f,%lld\n", cpu_time_used, totalComparisons);
 
     // Generate a new random array for hybrid sort
     gen_random_numbers(array, Size);
@@ -74,8 +74,8 @@ int main() {
     end = clock();
     cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Hybrid Time: %f seconds\n", cpu_time_used);
-    printf("Hybrid Comparisons: %lld\n", comparisons);
-    fprintf(file, "Hybrid,%f,%lld\n", cpu_time_used, comparisons);
+    printf("Hybrid Comparisons: %lld\n", totalComparisons);
+    fprintf(file, "Hybrid,%f,%lld\n", cpu_time_used, totalComparisons);
 
     // Free allocated memory
     free(array);

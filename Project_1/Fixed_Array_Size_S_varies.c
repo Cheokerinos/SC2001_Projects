@@ -52,11 +52,11 @@ int main() {
         gen_random_numbers(array, fixed_size);
 
         // Call mergeSortWithInsertionSort to sort the array and get the comparison count
-        comparison_count comparisons = mergeSortWithInsertionSort(array, array + fixed_size, threshold);
+        total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + fixed_size, threshold);
 
-        printf("Total comparisons with Threshold = %d: %llu\n", threshold, comparisons);
+        printf("Total comparisons with Threshold = %d: %llu\n", threshold, totalComparisons);
 
-        fprintf(file, "%d,%d,%llu\n", fixed_size, threshold, comparisons);
+        fprintf(file, "%d,%d,%llu\n", fixed_size, threshold, totalComparisons);
 
         free(array);
     }

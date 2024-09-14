@@ -57,9 +57,9 @@ int main() {
 
             gen_random_numbers(array, Size);
 
-            comparison_count comparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+            total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
 
-            fprintf(file, "%d,%d,%llu\n", Size, threshold, comparisons);
+            fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
 
             free(array);
         }

@@ -9,18 +9,20 @@
 
 //For generating random numbers in the array
 void gen_random_numbers(int *array, int len){
-    for (int i = 0; i < len; i++) {
-        //array[i] = rand() % (max - min + 1) + min;
-        
-        // Legit code for generating random sizes
+    for (int i = 0; i < len; i++) {    
         unsigned long x;
         x = rand(); // Generates between 0 to 32767
-        x <<= 15; // Shifts bits by 15 places to the left, aka 2^15. Increases number of bits, hence increasing range of values availble to be output. 
+        x <<= 15; // Shifts bits by 15 places to the left, aka 2^15. Increases number of bits, hence increasing range of values availble 
+        //to be output. 
+
         x ^= rand(); //Used to add more randomness when generating numbers. 
         // Without XOR, it is limited to its randomness due to the range of rand().
         // With XOR, there is a greater variety of values created.
         // This also avoids any biased patterns in random numbers. 
-        x %= 10000001; //Change this value for MAX Size. This generates up to number 10 million (10000001). Limits the range to be 0 to 10 million. 
+
+        x %= 10000001; //Change this value for MAX Size. This generates up to number 10 million (10000001). 
+        //Limits the range to be 0 to 10 million. 
+        
         array[i] = x;
     }
         
@@ -65,7 +67,7 @@ int main() {
         printf("\n");
 
         // Call mergeSortWithInsertionSort to start the hybrid algorithm
-        comparison_count comparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+        total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
 
         printf("After sorting:\n");
         for (int i = 0; i < 10; i++) {
@@ -73,10 +75,10 @@ int main() {
         }
         printf("\n");
 
-        printf("Total comparisons: %llu\n", comparisons);
+        printf("Total comparisons: %llu\n", totalComparisons);
 
         // Write results to csv
-        fprintf(file, "%d,%d,%llu\n", Size, threshold, comparisons);
+        fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
 
         free(array);
 

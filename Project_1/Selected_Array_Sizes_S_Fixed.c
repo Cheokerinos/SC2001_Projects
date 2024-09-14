@@ -62,7 +62,7 @@ int main() {
         printf("\n");
 
         // Call mergeSortWithInsertionSort to start the hybrid algorithm
-        comparison_count comparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
+        total_comparisons totalComparisons = mergeSortWithInsertionSort(array, array + Size, threshold);
 
         printf("After sorting:\n");
         for (int i = 0; i < 10; i++) {
@@ -70,10 +70,10 @@ int main() {
         }
         printf("\n");
 
-        printf("Total comparisons: %llu\n", comparisons);
+        printf("Total comparisons: %llu\n", totalComparisons);
 
         // Write results to csv
-        fprintf(file, "%d,%d,%llu\n", Size, threshold, comparisons);
+        fprintf(file, "%d,%d,%llu\n", Size, threshold, totalComparisons);
 
         free(array);
 
