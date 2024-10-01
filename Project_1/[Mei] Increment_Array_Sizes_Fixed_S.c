@@ -11,9 +11,9 @@
 void gen_random_numbers(int *array, int len){
     for (int i = 0; i < len; i++) {    
         unsigned long x;
-        x = rand(); // Generates between 0 to 32767
-        x <<= 15; // Shifts bits by 15 places to the left, aka 2^15. Increases number of bits, hence increasing range of values availble 
-        //to be output. 
+        x = rand() + 1; // Generates between 1 to 32767
+        x <<= 15; // Shifts bits by 15 places to the left, aka 2^15. Increases number of bits, hence increasing range of values
+        //availble to be output. 
 
         x ^= rand(); //Used to add more randomness when generating numbers. 
         // Without XOR, it is limited to its randomness due to the range of rand().
@@ -21,7 +21,7 @@ void gen_random_numbers(int *array, int len){
         // This also avoids any biased patterns in random numbers. 
 
         x %= 10000001; //Change this value for MAX Size. This generates up to number 10 million (10000001). 
-        //Limits the range to be 0 to 10 million. 
+        //Limits the range to be 1 to 10 million. 
         
         array[i] = x;
     }
