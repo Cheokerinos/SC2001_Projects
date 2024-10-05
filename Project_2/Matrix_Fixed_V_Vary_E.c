@@ -11,28 +11,30 @@
 //! If it outputs INT_MAX, means the vertex is still at infinity and not updated  
 //! And yes this is Undirected Graph
 
-//* Find the vertex with the minimum distance in the priority queue
+//* Find the unprocessed vertex with the minimum distance in the priority queue
 int minimumDistance(int distance[], bool ShortestPathTreeSet[], int priorityQueue[], int size, unsigned long long *Comparisons) {
     int minDistance = INT_MAX, min_index = -1;
 
-    //* Find the vertex with minimum distance and save it
+    //* Find the vertex with minimum distance and save it.
+    //* Loops through each iteration to compare vertex's distance with minDistance to find the
+    //* smallest distance vertex
     for (int i = 0; i < size; i++) {
         (*Comparisons)++;
-        int v = priorityQueue[i]; //* Checks the vertice in the priority queue and assign it to INT
+        int v = priorityQueue[i];
         
         //* If vertice not in ShortestPathTree &
         //* If distance of vertice is smaller or equals to infinity  
         if (!ShortestPathTreeSet[v] && distance[v] <= minDistance) { 
-                minDistance = distance[v];
+                minDistance = distance[v]; //* Updates minDistance with vertice's distance from source
                 min_index = i;
         }
     
     }
 
-    //* Remove minimum vertex from the priority queue
+    //* Remove smallest distance vertex from the priority queue
     if (min_index != -1) {
         int minVertex = priorityQueue[min_index];
-        priorityQueue[min_index] = priorityQueue[size - 1];  // Move the last vertex down the array to replace the vertex that is taken out
+        priorityQueue[min_index] = priorityQueue[size - 1];
         return minVertex;
     }
 
@@ -40,7 +42,6 @@ int minimumDistance(int distance[], bool ShortestPathTreeSet[], int priorityQueu
 }
 
 //* Print the constructed distance array
-
 void printSolution(int dist[]) {
     printf("Vertex \t\t Distance from Source\n");
     for (int i = 0; i < V; i++)
@@ -57,7 +58,8 @@ void dijkstra(int graph[V][V], int source, unsigned long long *Comparisons) {
     int queueSize = V;
     int priorityQueue[V];
     
-    //* Initialize distances to infinity and ShortestPathTreeSet[] to false as there are currently no vertices in ShortestPathTreeSet
+    //* Initialize distances to infinity and ShortestPathTreeSet[] to false as there 
+    //* are currently no vertices in ShortestPathTreeSet
     for (int i = 0; i < V; i++) {
         distance[i] = INT_MAX;
         ShortestPathTreeSet[i] = false;
@@ -69,6 +71,7 @@ void dijkstra(int graph[V][V], int source, unsigned long long *Comparisons) {
 
     //* Find the shortest path for all vertices
     for (int count = 0; count < V - 1; count++) {
+        
         //* Select a vertex with a minimum distance value from the priority queue
         int u = minimumDistance(distance, ShortestPathTreeSet, priorityQueue, queueSize, Comparisons);
 
@@ -80,17 +83,22 @@ void dijkstra(int graph[V][V], int source, unsigned long long *Comparisons) {
         queueSize--;  //* Decrease size of the priority queue after taking out each minimum distance vertex
         ShortestPathTreeSet[u] = true; //* Selected vertex u is now in the shortest path tree, no longer inside priority queue
 
-        //* Update distance[] of the adjacent vertices of the selected vertex
-        //* Loops until it has gone through all vertices
+        //* Checks each vertex v to see if distance from selected minVertex u (from minimumDistance())
+        //* can provide shorter path to v than what is currently known. If a shorter path is found, distance[v] is updated.
         for (int v = 0; v < V; v++) { 
-            //* Update distance[] if it's not yet in ShortestPathTreeSet & there's an edge from u to v & 
-            //* the total weight of the path from starting vertex to v through u is smaller than distance[v]
+
+            //* Checks if v has not been processed yet & there's a direct edge from u to v.
+            //* 4th condition checks if distance to v can be improved by going through u. Calculates total distance 
+            //* from source to v through u. If this newly calculated distance is smaller than current distance[v], 
+            //* means shorter path has been found. Distance for v will be updated.
             if (!ShortestPathTreeSet[v] && graph[u][v] && distance[u] != INT_MAX && distance[u] + graph[u][v] < distance[v]) {
                 (*Comparisons)++;
                 distance[v] = distance[u] + graph[u][v];
             }
         }
-    }    // Debug: Output the selected vertex and updated distances
+    }    
+    
+    // Debug: Output the selected vertex and updated distances
     //     printf("Selected vertex: %d\n", u);
     //     printf("Updated distances: ");
     //     for (int i = 0; i < V; i++) {
@@ -122,7 +130,11 @@ void generateRandomGraph(int graph[V][V], int maxEdges) {
 
         //* Ensure no self-loops and no duplicate edges
         if (u != v && graph[u][v] == 0) {
-            int weight = rand() % 100 + 1;  //* Random weight between 1 and 100. No 0 because it's for starting vertex only. No negative numbers either.
+
+            //* Random weight between 1 and 100. No 0 because it's for starting vertex only.
+            //* No negative numbers either.
+            int weight = rand() % 100 + 1;  
+
             graph[u][v] = weight;
             graph[v][u] = weight;  //! For undirected graph
             edgeCount++;
