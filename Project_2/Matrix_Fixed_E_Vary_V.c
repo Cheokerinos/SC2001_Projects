@@ -114,7 +114,7 @@ int main() {
     srand(time(0)); 
 
     // Maximum number of edges
-    const int fixedEdges = 1000;  //! Can change this value to any other value. I put 10000 to make it fair
+    const int fixedEdges = 10000;  //! Can change this value to any other value. I put 10000 to make it fair
     int (*graph)[MAX_V] = malloc(MAX_V * MAX_V * sizeof(int));  
 
     if (graph == NULL) {
